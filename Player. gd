@@ -80,11 +80,10 @@ func _physics_process(delta):
 func take_damage(damage):
 	hp -= damage
 	if hp <= 0:
-		queue_free()
+		get_tree().change_scene("res://GameOver.tscn")
 
 func ouch():
 	Global.lose_life()
-	set_modulate(Color(1,0.3,0.3,0.3))
 	take_damage(1)
 	$Timer.start()
 
@@ -117,3 +116,4 @@ func _on_player_body_entered(body):
 
 func _on_player_area_entered(area):
 		set_modulate(Color(0.3,0.3,0.3,0.3))
+		take_damage(1)
