@@ -8,8 +8,8 @@ var SPEED = 210
 var velocity = Vector2(0,0)
 var input_vector = Vector2.ZERO
 var coins = 0
+enum States {AIR = 1, FLOOR}
 var state = States.AIR
-enum States {AIR = 1, FLOOR = 2}
 const RUNSPEED = 7000
 const JUMPFORCE = -1100
 const GRAVITY = 35
