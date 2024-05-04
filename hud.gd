@@ -14,8 +14,13 @@ func _on_coin_collected():
 	if coins == 3:
 		get_tree().change_scene("res://YouWin.tscn")
 
-func load_hearts():
-	$HeartsFull.rect_size.x = Global.lives * 53
-	$HeartsEmpty.rect_size.x = (Global.max_lives - Global.lives) * 53
-	
+func load_hearts(num_hearts):
+	print("i got called")
+	for i in range(1, max_lives+1):
+		print(' i is', i)
+	var heart_node = get_node("Heart"+str(i))
+	if i <= num_hearts:
+		heart_node.visible = true
+	else:
+		heart_node.visible = false
 
