@@ -9,7 +9,7 @@ var input_vector = Vector2.ZERO
 var velocity = Vector2(0,0)
 export (int) var speed = 100
 var color = 0
-var hp = 7
+var hp = 13
 
 func _physics_process(delta):
 	global_position.x -= speed * delta
@@ -21,18 +21,15 @@ func Shoot_Bullet():
 	b.direction = direction
 	get_parent().add_child(b)
 	b.osition.y = position. y
-	b.position.x = position. x + 25 * direction * 3
+	b.position.x = position. x + 25 * direction * 6
 
 func take_damage(damage):
 	hp -= damage
 	if hp <= 0:
 		$AnimationPlayer.play("death") 
+		$Explode.play()
 
-func ouch():
-	take_damage(1)
-	$AnimationPlayer.play("death") 
-	$AnimationPlayer.play("hit")
-	$Timer.start()
+
 
 func _on_top_checker_body_entered(body):
 	$Sprite.play("squashed")
@@ -48,11 +45,10 @@ func _on_Timer_timeout():
 	queue_free()
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	queue_free()
+	$Timer.start()
 
 func _on_sides_checker_body_entered(body):
-	if body.is_in_group("Laser"):
-		if body.get_collision_layer() == 1:
-			body.ouch(position.x)
-		elif body.get_collision_layer() == 32:
-			body.take_damage(1)
+	if body.get_collision_layer() == 1:
+		body.take_damage(1)
+	elif body.get_collision_layer() == 32:
+		$AnimationPlayer.play("death")
