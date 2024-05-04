@@ -13,7 +13,7 @@ var state = States.AIR
 const RUNSPEED = 7000
 const JUMPFORCE = -1100
 const GRAVITY = 35
-var hp = 10
+var hp = 40
 
 func _physics_process(delta):
 	match state:
@@ -61,14 +61,11 @@ func _physics_process(delta):
 				$Sprite.play("idle")
 				velocity.x = lerp(velocity.x,0,0.2)
 
-			if Input.is_action_just_pressed("jump"):
-				velocity. y = JUMPFORCE
-				state = States.AIR
-			move_and_fall()
-
-	if coins == 3:
-		get_tree().change_scene("res://YouWin.tscn")
-		
+	if Input.is_action_just_pressed("jump"):
+		velocity. y = JUMPFORCE
+		state = States.AIR
+		move_and_fall()
+	
 		global_position += input_vector * SPEED
 		
 		move_and_slide(velocity, Vector2.UP)
@@ -79,17 +76,18 @@ func _physics_process(delta):
 	if Input.is_action_just_released("move_right"):
 		set_modulate(Color(1,1,1,1))
 
+func ouch(damage):
+	take_damage(1)
+	$AnimationPlayer.play("death") 
+	$AnimationPlayer.play("hit")
+	$Timer.start()
+
+
 func take_damage(damage):
-	ouch()
 	hp -= damage
 	if hp <= 0:
 		get_tree().change_scene("res://GameOver.tscn")
 
-func ouch():
-	Global.lose_life()
-	take_damage(1)
-	$Timer.start()
-	Global.hud.load_hearts() 
 
 func shoot_laser():
 	if Input.is_action_just_pressed("shoot"):
@@ -116,8 +114,4 @@ func _on_Timer_timeout():
 func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
 		body.ouch()
-
-
-func _on_player_area_entered(area):
 		set_modulate(Color(0.3,0.3,0.3,0.3))
-		take_damage(1)
