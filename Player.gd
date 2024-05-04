@@ -13,7 +13,7 @@ var state = States.AIR
 const RUNSPEED = 7000
 const JUMPFORCE = -1100
 const GRAVITY = 35
-var hp = 4
+var hp = 10
 
 func _physics_process(delta):
 	match state:
@@ -71,6 +71,8 @@ func _physics_process(delta):
 		
 		global_position += input_vector * SPEED
 		
+		move_and_slide(velocity, Vector2.UP)
+		
 	if Input.is_action_just_pressed("shoot"):
 		$AnimationPlayer.play("S")
 		shoot_laser()
@@ -78,6 +80,7 @@ func _physics_process(delta):
 		set_modulate(Color(1,1,1,1))
 
 func take_damage(damage):
+	ouch()
 	hp -= damage
 	if hp <= 0:
 		get_tree().change_scene("res://GameOver.tscn")
@@ -86,6 +89,7 @@ func ouch():
 	Global.lose_life()
 	take_damage(1)
 	$Timer.start()
+	Global.hud.load_hearts() 
 
 func shoot_laser():
 	if Input.is_action_just_pressed("shoot"):
@@ -93,8 +97,8 @@ func shoot_laser():
 		var f = Player_Laser.instance()
 		f.direction = direction
 		get_parent().add_child(f)
-		f.position.y = position. y
-		f.position.x = position. x + 25 * direction * 3
+		f.position.y = position. y 
+		f.position.x = position. x + 25 * direction * 5
 
 func is_on_floor():
 	velocity = move_and_slide(velocity,Vector2.UP)
