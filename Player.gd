@@ -14,6 +14,7 @@ const RUNSPEED = 7000
 const JUMPFORCE = -1100
 const GRAVITY = 35
 var hp = 40
+var health = 33
 
 func _physics_process(delta):
 	match state:
@@ -76,11 +77,10 @@ func _physics_process(delta):
 	if Input.is_action_just_released("move_right"):
 		set_modulate(Color(1,1,1,1))
 
-func ouch(damage):
+func ouch():
 	take_damage(1)
 	$AnimationPlayer.play("death") 
 	$AnimationPlayer.play("hit")
-	$Timer.start()
 
 
 func take_damage(damage):
@@ -109,9 +109,10 @@ func add_coin():
 	coins = coins + 1
 
 func _on_Timer_timeout():
-	set_modulate(Color(1,1,1,1))
+	queue_free()
 
 func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
 		body.ouch()
 		set_modulate(Color(0.3,0.3,0.3,0.3))
+
