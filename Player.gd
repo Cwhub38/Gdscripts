@@ -115,4 +115,3 @@ func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
 		body.ouch()
 		set_modulate(Color(0.3,0.3,0.3,0.3))
-
