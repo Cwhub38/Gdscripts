@@ -12,9 +12,9 @@ enum States {AIR = 1, FLOOR}
 var state = States.AIR
 const RUNSPEED = 7000
 const JUMPFORCE = -1100
-const GRAVITY = 35
-var hp = 40
-var health = 33
+const GRAVITY = 55
+var hp = 7
+var health = 7
 
 func _physics_process(delta):
 	match state:
