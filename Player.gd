@@ -1,6 +1,7 @@
 extends KinematicBody2D
 class_name Player
 
+signal took_damage(current_hp)
 signal spawn_laser(location)
 onready var muzzle = $Muzzle 
 const Player_Laser = preload("res://PlayerLaser.tscn")
@@ -12,8 +13,8 @@ enum States {AIR = 1, FLOOR}
 var state = States.AIR
 const RUNSPEED = 7000
 const JUMPFORCE = -1100
-const GRAVITY = 55
-var hp = 7
+const GRAVITY = 75
+var hp = 5
 var health = 7
 
 func _physics_process(delta):
@@ -84,7 +85,11 @@ func ouch():
 
 
 func take_damage(damage):
-	hp -= damage
+	self.text = str(hp)
+	if hp > 0:
+		hp -= 1
+		took_damage.emit(hp)
+	else: hp == 5
 	if hp <= 0:
 		get_tree().change_scene("res://GameOver.tscn")
 
@@ -96,7 +101,7 @@ func shoot_laser():
 		f.direction = direction
 		get_parent().add_child(f)
 		f.position.y = position. y 
-		f.position.x = position. x + 25 * direction * 5
+		f.position.x = position. x + 25 * direction 
 
 func is_on_floor():
 	velocity = move_and_slide(velocity,Vector2.UP)
@@ -115,3 +120,9 @@ func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
 		body.ouch()
 		set_modulate(Color(0.3,0.3,0.3,0.3))
+
+
+func _on_player_area_entered(area):
+	if area.is_in_group("enemies"):
+		print("hi")
+
