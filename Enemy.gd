@@ -10,7 +10,7 @@ var velocity = Vector2(0,0)
 export (int) var speed = 66
 var color = 0
 var ah = 22
-var Healthh = 22
+
 
 func _physics_process(delta):
 	global_position.x -= speed * delta
