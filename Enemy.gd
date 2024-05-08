@@ -7,9 +7,10 @@ const Bullet = preload("res://Bullet.tscn")
 onready var muzzle = $Muzzle
 var input_vector = Vector2.ZERO
 var velocity = Vector2(0,0)
-export (int) var speed = 100
+export (int) var speed = 66
 var color = 0
-var hp = 13
+var ah = 22
+var Healthh = 22
 
 func _physics_process(delta):
 	global_position.x -= speed * delta
@@ -24,22 +25,20 @@ func Shoot_Bullet():
 	b.position.x = position. x + 25 * direction * 6
 
 func take_damage(damage):
-	hp -= damage
-	if hp <= 0:
-		$AnimationPlayer.play("death") 
-		$Explode.play()
+	ah -= 1
+	$ah.text = str(ah)
+	if ah <= 0:
+		$AnimationPlayer.play("death")
+		get_tree().change_scene("res://YouWin.tscn")
 
-
+func ouch():
+	take_damage(1)
+	$AnimationPlayer.play("death") 
+	$AnimationPlayer.play("hit")
 
 func _on_top_checker_body_entered(body):
-	$Sprite.play("squashed")
-	speed = 0
-	set_collision_layer_bit(4, false)
-	set_collision_mask_bit(4, false)
-	$top_checker.set_collision_layer_bit(4, false)
-	$top_checker.set_collision_mask_bit(0, false)
-	$sides_checker.set_collision_layer_bit(4, false)
-	$sides_checker.set_collision_mask_bit(0, false)
+	if body.is_in_group("Players"):
+		body.ouch()
 
 func _on_Timer_timeout():
 	queue_free()
@@ -48,7 +47,6 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	$Timer.start()
 
 func _on_sides_checker_body_entered(body):
-	if body.get_collision_layer() == 1:
-		body.take_damage(1)
-	elif body.get_collision_layer() == 32:
-		$AnimationPlayer.play("death")
+	if body.is_in_group("Players"):
+		body.ouch()
+
