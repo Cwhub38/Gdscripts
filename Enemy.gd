@@ -1,7 +1,6 @@
 extends KinematicBody2D
 class_name Enemy
 
-var hud
 signal spawn_Bullet(location)
 const Bullet = preload("res://Bullet.tscn")
 onready var muzzle = $Muzzle
@@ -49,4 +48,5 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 func _on_sides_checker_body_entered(body):
 	if body.is_in_group("Players"):
 		body.ouch()
+		body.take_damage(1)
 
