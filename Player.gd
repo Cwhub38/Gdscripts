@@ -112,7 +112,7 @@ func add_coin():
 	coins = coins + 1
 
 func _on_Timer_timeout():
-	queue_free()
+	take_damage(1)
 
 func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
