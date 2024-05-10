@@ -1,7 +1,6 @@
 extends KinematicBody2D
 class_name Player
 
-
 signal spawn_laser(location)
 onready var muzzle = $Muzzle 
 const Player_Laser = preload("res://PlayerLaser.tscn")
@@ -15,7 +14,6 @@ const RUNSPEED = 7000
 const JUMPFORCE = -1100
 const GRAVITY = 75
 var hp = 30
-
 
 func _physics_process(delta):
 	match state:
@@ -83,14 +81,12 @@ func ouch():
 	$AnimationPlayer.play("death") 
 	$AnimationPlayer.play("hit")
 
-
 func take_damage(damage):
 	hp -= damage
 	hp -= 1
 	$hp.text = str(hp)
 	if hp <= 0:
-		get_tree().change_scene("res://GameOver.tscn")
-
+		$gameover.play()
 
 func shoot_laser():
 	if Input.is_action_just_pressed("shoot"):
@@ -98,7 +94,7 @@ func shoot_laser():
 		var f = Player_Laser.instance()
 		f.direction = direction
 		get_parent().add_child(f)
-		f.position.y = position. y 
+		f.position.y = position. y + -10
 		f.position.x = position. x + 25 * direction 
 
 func is_on_floor():
@@ -122,3 +118,6 @@ func _on_player_body_entered(body):
 func _on_player_area_entered(area):
 	if area.is_in_group("enemies"):
 		print("hi")
+
+func _on_gameover_finished():
+	get_tree().change_scene("res://GameOver.tscn")
