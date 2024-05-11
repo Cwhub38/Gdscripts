@@ -13,7 +13,7 @@ var state = States.AIR
 const RUNSPEED = 7000
 const JUMPFORCE = -1100
 const GRAVITY = 75
-var hp = 30
+var hp = 10
 
 func _physics_process(delta):
 	match state:
@@ -114,10 +114,15 @@ func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
 		ouch()
 		set_modulate(Color(0.3,0.3,0.3,0.3))
+		trauma()
 
 func _on_player_area_entered(area):
 	if area.is_in_group("enemies"):
+		trauma()
 		print("hi")
 
 func _on_gameover_finished():
 	get_tree().change_scene("res://GameOver.tscn")
+
+func trauma():
+	$AnimationPlayer.play("camshake")
