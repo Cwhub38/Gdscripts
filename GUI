@@ -3,8 +3,7 @@ extends MarginContainer
 onready var number_label = $Bars/LifeBar/Count/Background/Number
 onready var bar = $Bars/LifeBar/TextureProgress
 onready var tween = $Tween
-var health
-var animated_health
+
 
 func _ready():
 	var player_max_health = $"../Characters/Player".max_health
@@ -15,11 +14,13 @@ func _on_Player_health_changed(player_health):
 
 func update_health(new_value):
 	tween.interpolate_property(self, "animated_health", animated_health, new_value, 0.6, Tween.Trans_LNEAR, Tween.EASE_IN)
+	if not tween.is_active():
+		tween.start()
 
 func _process(delta):
 	var round_value = round(animated_health)
 	number_label.text = str(round_value)
-	bar.value = round_value
+	bar.value = animated_health
 
 
 func _on_Player_died():
