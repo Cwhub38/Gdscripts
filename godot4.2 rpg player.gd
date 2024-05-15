@@ -1,6 +1,3 @@
-godot 4.2 rpg from the dev tutorial
-player wont move 
-
 extends CharacterBody2D
 
 
@@ -63,6 +60,27 @@ func play_anim(movement):
 		anim.flip_h = false
 		if movement == 1:
 			anim.play("side_walk")
+		elif movement == 0:
+			anim.play("side_idle")
+	if dir == "left":
+		anim.flip_h = false
+		if movement == 1:
+			anim.play("side_walk")
+		elif movement == 0:
+			anim.play("side_idle")
+	
+	if dir == "down":
+		anim.flip_h = true
+		if movement == 1:
+			anim.play("front_walk")
+		elif movement == 0:
+			anim.play("front_walk")
+	if dir == "up":
+		anim.flip_h = true
+		if movement == 1:
+			anim.play("back_walk")
+		elif movement == 0:
+			anim.play("back_idle")
 
 func _on_player_hitbox_body_entered(body):
 	if body.has_method("enemy"):
@@ -81,8 +99,6 @@ func enemy_attack():
 		print(health)
 
 
-func _on_attack_cooldown_timeout():
-	enemy_attack_cooldown = true
 
 func attack():
 	var dir = current_dir
@@ -101,12 +117,12 @@ func attack():
 		if dir == "down":
 			$AnimatedSprite2D.play("front_attack")
 			$deal_attack_timer.start()
-		if dir == "wn":
+		if dir == "up":
 			$AnimatedSprite2D.play("back_attack")
 			$deal_attack_timer.start()
 
 
 
-func _on_deal_attack_timer_timeout():
-	$deal_attack_timer.stop()
-	attack_ip = NOTIFICATION_WM_CLOSE_REQUEST
+
+func _on_attack_cooldown_timeout():
+	enemy_attack_cooldown = true
