@@ -51,7 +51,7 @@ func player_movement(delta):
 		velocity.y = 0
 	
 		move_and_slide()
-
+	
 func play_anim(movement):
 	var dir = current_dir
 	var anim = $AnimatedSprite2D
@@ -61,26 +61,30 @@ func play_anim(movement):
 		if movement == 1:
 			anim.play("side_walk")
 		elif movement == 0:
-			anim.play("side_idle")
+			if attack_ip == false:
+				anim.play("side_idle")
 	if dir == "left":
-		anim.flip_h = false
+		anim.flip_h = true
 		if movement == 1:
 			anim.play("side_walk")
 		elif movement == 0:
-			anim.play("side_idle")
+			if attack_ip == false:
+				anim.play("side_idle")
 	
 	if dir == "down":
 		anim.flip_h = true
 		if movement == 1:
 			anim.play("front_walk")
 		elif movement == 0:
-			anim.play("front_walk")
+			if attack_ip == false:
+				anim.play("front_walk")
 	if dir == "up":
 		anim.flip_h = true
 		if movement == 1:
 			anim.play("back_walk")
 		elif movement == 0:
-			anim.play("back_idle")
+			if attack_ip == false:
+				anim.play("back_idle")
 
 func _on_player_hitbox_body_entered(body):
 	if body.has_method("enemy"):
@@ -121,7 +125,8 @@ func attack():
 			$AnimatedSprite2D.play("back_attack")
 			$deal_attack_timer.start()
 
-
+func player():
+	pass
 
 
 func _on_attack_cooldown_timeout():
