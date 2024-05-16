@@ -21,3 +21,12 @@ func _physics_process(delta):
 func _on_PlayerLaser_body_entered(body):
 	if body.is_in_group("enemies"):
 		body.take_damage(1)
+
+add this to the world script
+
+var Laser = preload("res://projectiles/PlayerLaser.tscn")
+
+func _on_Player_spawn_laser(location):
+	var l = Laser.instance()
+	l.global_position = location
+	add_child(l)
