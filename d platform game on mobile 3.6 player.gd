@@ -1,6 +1,7 @@
 extends KinematicBody2D
 class_name Player
 
+var hud
 signal spawn_laser(location)
 onready var muzzle = $Muzzle 
 const Player_Laser = preload("res://PlayerLaser.tscn")
@@ -77,9 +78,9 @@ func _physics_process(delta):
 		set_modulate(Color(1,1,1,1))
 
 func ouch():
+	set_modulate(Color(1,0.3,0.3,0.3))
 	take_damage(1)
-	$AnimationPlayer.play("death") 
-	$AnimationPlayer.play("hit")
+
 
 func take_damage(damage):
 	hp -= damage
@@ -87,6 +88,7 @@ func take_damage(damage):
 	$hp.text = str(hp)
 	if hp <= 0:
 		$gameover.play()
+
 
 func shoot_laser():
 	if Input.is_action_just_pressed("shoot"):
@@ -108,7 +110,10 @@ func add_coin():
 	coins = coins + 1
 
 func _on_Timer_timeout():
+	set_modulate(Color(1,1,1,1))
 	take_damage(1)
+
+
 
 func _on_player_body_entered(body):
 	if body.is_in_group("enemies"):
@@ -116,13 +121,15 @@ func _on_player_body_entered(body):
 		set_modulate(Color(0.3,0.3,0.3,0.3))
 		trauma()
 
+
 func _on_player_area_entered(area):
 	if area.is_in_group("enemies"):
 		trauma()
 		print("hi")
 
-func _on_gameover_finished():
-	get_tree().change_scene("res://GameOver.tscn")
-
 func trauma():
 	$AnimationPlayer.play("camshake")
+
+
+func _on_gameover_finished():
+	get_tree().change_scene("res://GameOver.tscn")
