@@ -19,7 +19,23 @@ func _on_coin_collected():
 	coins = coins + 1
 	_ready()
 
+my global
+extends Node
 
+var max_lives = 33
+var lives = max_lives
+var hud
+
+func lose_life():
+	lives -= 1
+	hud.load_hearts()
+	if lives <= 0:
+		get_tree().change_scene("res://GameOver.tscn")
+
+
+
+
+where do i add Global.lose_life()
 
 player functions 
 
